@@ -23,5 +23,5 @@ runs:
     - name: add to path
       run: echo "${{ github.action_path }}/bin" >> $GITHUB_PATH
       shell: bash
-    - run: mc --help
+    - run: mc --version
       shell: bash
