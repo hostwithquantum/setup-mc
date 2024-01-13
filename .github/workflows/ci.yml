@@ -1,0 +1,24 @@
+on:
+  pull_request:
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    env:
+      MC_USER: user
+      MC_PASS: minio123
+    services:
+      minio:
+        image: fclairamb/minio-github-actions
+        env:
+          MINIO_ROOT_USER: user
+          MINIO_ROOT_PASSWORD: minio123
+        ports:
+        - 9000:9000
+    steps:
+    - uses: actions/checkout@v4
+    - uses: ./
+    - run: mc alias set minio http://127.0.0.1:9000 $MC_USER $MC_PASS
+    - run: mc mb minio/test
+    - run: mc cp action.yml minio/test/
+    - run: mc ls minio/test
