@@ -2,7 +2,19 @@ on:
   pull_request:
 
 jobs:
+  lint:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v4
+    - uses: asdf-vm/actions/install@v3
+      with:
+        tool_versions: |
+          action-validator 0.5.1
+    - run: action-validator --verbose ./action.yml
+
   test:
+    needs:
+    - lint
     runs-on: ubuntu-latest
     env:
       MC_USER: user
