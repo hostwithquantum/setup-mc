@@ -1,27 +1,57 @@
----
 name: 'hostwithquantum/setup-mc'
 description: 'Setup the minio client (mc) on GitHub Actions'
 branding:
   icon: 'file'
   color: 'purple'
+inputs:
+  dl-url:
+    description: 'The url to download mc from'
+    required: true
+    default: 'https://dl.minio.io/client/mc/release/linux-amd64/mc'
+  alias-name:
+    description: 'The name of the alias'
+    required: false
+    default: 'default'
+  alias-url:
+    description: 'The url for the s3 endpoint'
+    required: false
+    default: ''
+  alias-access-key:
+    description: 'The access key for the s3 endpoint'
+    required: false
+  alias-secret-key:
+    description: 'The secret key for the s3 endpoint'
+    required: false
+    default: ''
 runs:
   using: "composite"
   steps:
-    - name: create bin directory
-      run: mkdir ${{ github.action_path }}/bin
-      shell: bash
-    - name: install the client
-      run: |
-        curl \
-          -H 'Cache-Control: no-cache' \
-          "https://dl.minio.io/client/mc/release/linux-amd64/mc" \
-          -o ${{ github.action_path }}/bin/mc \
-      shell: bash
-    - name: make executable
-      run: chmod +x ${{ github.action_path }}/bin/mc
-      shell: bash
-    - name: add to path
-      run: echo "${{ github.action_path }}/bin" >> $GITHUB_PATH
-      shell: bash
-    - run: mc --version
-      shell: bash
+  - name: create bin directory
+    run: mkdir ${{ github.action_path }}/bin
+    shell: bash
+  - name: install the client
+    run: |
+      curl \
+        -H 'Cache-Control: no-cache' \
+        "${{ inputs.dl-url }}" \
+        -o ${{ github.action_path }}/bin/mc
+      echo "Installed mc from ${{ inputs.dl-url }}" >> $GITHUB_STEP_SUMMARY
+    shell: bash
+  - name: make executable
+    run: chmod +x ${{ github.action_path }}/bin/mc
+    shell: bash
+  - name: add to path
+    run: echo "${{ github.action_path }}/bin" >> $GITHUB_PATH
+    shell: bash
+  - run: mc --version
+    shell: bash
+  - if: ${{ inputs.alias-url != '' }}
+    shell: bash
+    run: |
+      set -euo pipefail
+      mc alias set \
+      ${{ inputs.alias-name }} \
+      ${{ inputs.alias-url }} \
+      ${{ inputs.alias-access-key }} \
+      ${{ inputs.alias-secret-key }}
+      echo "Configured [${{ inputs.alias-name}}](${{ inputs.alias-url }})" >> $GITHUB_STEP_SUMMARY

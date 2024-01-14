@@ -26,11 +26,34 @@ jobs:
           MINIO_ROOT_USER: user
           MINIO_ROOT_PASSWORD: minio123
         ports:
-        - 9000:9000
+        - 9001:9000
     steps:
     - uses: actions/checkout@v4
     - uses: ./
-    - run: mc alias set minio http://127.0.0.1:9000 $MC_USER $MC_PASS
+    - run: mc alias set minio http://127.0.0.1:9001 $MC_USER $MC_PASS
     - run: mc mb minio/test
     - run: mc cp action.yml minio/test/
     - run: mc ls minio/test
+
+  test-inputs:
+    needs:
+    - lint
+    runs-on: ubuntu-latest
+    services:
+      minio:
+        image: fclairamb/minio-github-actions
+        env:
+          MINIO_ROOT_USER: user
+          MINIO_ROOT_PASSWORD: minio123
+        ports:
+        - 9002:9000
+    steps:
+    - uses: actions/checkout@v4
+    - uses: ./
+      with:
+        alias-name: example
+        alias-url: http://127.0.0.1:9002
+        alias-access-key: user
+        alias-secret-key: minio123
+    - run: mc mb example/test-bucket
+    - run: mc ls example/test-bucket
