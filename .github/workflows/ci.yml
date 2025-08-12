@@ -5,7 +5,7 @@ jobs:
   lint:
     runs-on: ubuntu-latest
     steps:
-    - uses: actions/checkout@v4
+    - uses: actions/checkout@v5
     - uses: asdf-vm/actions/install@v4
       with:
         tool_versions: |
@@ -28,7 +28,7 @@ jobs:
         ports:
         - 9001:9000
     steps:
-    - uses: actions/checkout@v4
+    - uses: actions/checkout@v5
     - uses: ./
     - run: mc alias set minio http://127.0.0.1:9001 $MC_USER $MC_PASS
     - run: mc mb minio/test
@@ -48,7 +48,7 @@ jobs:
         ports:
         - 9002:9000
     steps:
-    - uses: actions/checkout@v4
+    - uses: actions/checkout@v5
     - uses: ./
       with:
         alias-name: example
