@@ -7,7 +7,7 @@ inputs:
   dl-url:
     description: 'The url to download mc from'
     required: true
-    default: 'https://dl.minio.io/client/mc/release/linux-amd64/mc'
+    default: 'https://dl.min.io/client/mc/release/linux-amd64/mc'
   alias-name:
     description: 'The name of the alias'
     required: false
