@@ -33,6 +33,7 @@ runs:
     run: |
       curl \
         -H 'Cache-Control: no-cache' \
+        --location \
         "${DL_URL}" \
         -o ${{ github.action_path }}/bin/mc
       echo "Installed mc from ${DL_URL}" >> $GITHUB_STEP_SUMMARY
