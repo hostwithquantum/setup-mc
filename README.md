@@ -20,7 +20,7 @@ jobs:
   example:
     runs-on: ubuntu-latest
     steps:
-    - uses: hostwithquantum/setup-mc@v1
+    - uses: hostwithquantum/setup-mc@v1.1.1
     - run: |
         mc alias set my-storage \
           https://s3.example.org \
@@ -36,7 +36,7 @@ jobs:
   example:
     runs-on: ubuntu-latest
     steps:
-    - uses: hostwithquantum/setup-mc@v1
+    - uses: hostwithquantum/setup-mc@v1.1.1
       with:
         alias-name: my-example
         alias-url: https://s3.example.org
