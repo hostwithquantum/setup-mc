@@ -33,10 +33,12 @@ runs:
     run: |
       curl \
         -H 'Cache-Control: no-cache' \
-        "${{ inputs.dl-url }}" \
+        "${DL_URL}" \
         -o ${{ github.action_path }}/bin/mc
-      echo "Installed mc from ${{ inputs.dl-url }}" >> $GITHUB_STEP_SUMMARY
+      echo "Installed mc from ${DL_URL}" >> $GITHUB_STEP_SUMMARY
     shell: bash
+    env:
+      DL_URL: ${{ inputs.dl-url }}
   - name: make executable
     run: chmod +x ${{ github.action_path }}/bin/mc
     shell: bash
@@ -50,8 +52,13 @@ runs:
     run: |
       set -euo pipefail
       mc alias set \
-      ${{ inputs.alias-name }} \
-      ${{ inputs.alias-url }} \
-      ${{ inputs.alias-access-key }} \
-      ${{ inputs.alias-secret-key }}
-      echo "Configured [${{ inputs.alias-name}}](${{ inputs.alias-url }})" >> $GITHUB_STEP_SUMMARY
+        "${ALIAS_NAME}" \
+        "${ALIAS_URL}" \
+        "${ALIAS_ACCESS_KEY}" \
+        "${ALIAS_SECRET_KEY}"
+      echo "Configured [${ALIAS_NAME}](${ALIAS_URL})" >> $GITHUB_STEP_SUMMARY
+    env:
+      ALIAS_NAME: ${{ inputs.alias-name}}
+      ALIAS_URL: ${{ inputs.alias-url }}
+      ALIAS_ACCESS_KEY: ${{ inputs.alias-access-key }}
+      ALIAS_SECRET_KEY: ${{ inputs.alias-secret-key }}

@@ -1,0 +1,5 @@
+rules:
+  github-env:
+    disable: true
+  unpinned-images:
+    disable: true
