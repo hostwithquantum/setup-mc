@@ -4,7 +4,10 @@
 [![Release](https://img.shields.io/github/v/release/hostwithquantum/setup-mc?sort=semver)](https://github.com/hostwithquantum/setup-mc/releases)
 [![Marketplace](https://img.shields.io/badge/Marketplace-setup--mc-blue?logo=github)](https://github.com/marketplace/actions/hostwithquantum-setup-mc)
 
-A GitHub Action that installs the [MinIO client (`mc`)](https://min.io/docs/minio/linux/reference/minio-mc.html) on your runner, with optional alias configuration.
+A GitHub Action that installs the [MinIO AIStor client (`mc`)](https://docs.min.io/aistor/reference/cli/) on your runner, with optional alias configuration.
+
+> [!IMPORTANT]
+> The AIStor client (`mc`) is a drop-in replacement for the MinIO Client, but it is no longer open source.
 
 ## Requirements
 
@@ -20,7 +23,7 @@ jobs:
   example:
     runs-on: ubuntu-latest
     steps:
-    - uses: hostwithquantum/setup-mc@v1.1.1
+    - uses: hostwithquantum/setup-mc@v1.2.0
     - run: |
         mc alias set my-storage \
           https://s3.example.org \
@@ -36,7 +39,7 @@ jobs:
   example:
     runs-on: ubuntu-latest
     steps:
-    - uses: hostwithquantum/setup-mc@v1.1.1
+    - uses: hostwithquantum/setup-mc@v1.2.0
       with:
         alias-name: my-example
         alias-url: https://s3.example.org
@@ -60,4 +63,4 @@ When `alias-url` is set, the action configures an `mc` alias using the provided 
 
 ## Versioning
 
-Pin to a to a full tag / commit SHA if you want reproducible builds.
+Pin to a full tag / commit SHA if you want reproducible builds.
